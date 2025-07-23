@@ -30,6 +30,8 @@ public class CreateNameNetwork : NetworkBehaviour
             isName = false;
             isName = true;
         }
+        hienTenNhanVat.transform.LookAt(Camera.main.transform);
+        hienTenNhanVat.transform.Rotate(0, 180, 0);
 
     }
     public void CreateNameCharacter()
