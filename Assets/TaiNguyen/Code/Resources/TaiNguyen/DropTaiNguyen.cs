@@ -34,7 +34,7 @@ public class DropTaiNguyen : MonoBehaviour
         RaycastHit hit;
 
         // Ưu tiên kiểm tra cây trước
-        if (Physics.Raycast(ray, out hit, 4, TreeLayer))
+        if (Physics.Raycast(ray, out hit, 20, TreeLayer))
         {
             Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.green);
             nutNhat.SetActive(true);

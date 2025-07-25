@@ -18,6 +18,7 @@ public class OnlineGame : SimulationBehaviour, IPlayerJoined
     public TextMeshProUGUI canhBao;
     private string textCanhBaoBanDau = "Vui lòng nhập tên ít nhất 2 kí tự và nhiều nhất 10 kí tự!";
     public bool tatMoCanhBao = false;
+   [Header("Toa do Spaw")]
     public string nameNetWork;
     public float vX;
     public float vY;
@@ -26,7 +27,7 @@ public class OnlineGame : SimulationBehaviour, IPlayerJoined
 
     private void Start()
     {
-        chooserMode.SetActive(true);
+        //chooserMode.SetActive(true);
         startGame.SetActive(false);
         canhBao.text = textCanhBaoBanDau;
     }
@@ -57,6 +58,7 @@ public class OnlineGame : SimulationBehaviour, IPlayerJoined
                         cam.setCamera(camera.transform);
                     }
                 });
+            chooserMode.SetActive(false);
 
 
         }
@@ -64,13 +66,13 @@ public class OnlineGame : SimulationBehaviour, IPlayerJoined
     public void ChooseHuman()
     {
         chooseChatacter = 0;
-        Destroy(chooserMode);
+       chooserMode.SetActive(false) ;
         createMode.SetActive(true);
     }
     public void ChooseHulk()
     {
         chooseChatacter = 1;
-        Destroy(chooserMode);
+        chooserMode.SetActive(false);
         createMode.SetActive(true);
 
     }

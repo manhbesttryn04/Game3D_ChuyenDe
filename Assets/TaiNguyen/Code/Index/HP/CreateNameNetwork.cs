@@ -13,7 +13,6 @@ public class CreateNameNetwork : NetworkBehaviour
     public NetworkString<_16> NameNetWork { get; set; }
     public TextMeshProUGUI hienTenNhanVat;
     public TextMeshProUGUI hienTenNhatVatLocal;
-    public TickTimer tickTimer { get; set; }
     public bool isGame = false;
 
     public override void Spawned()
@@ -30,9 +29,7 @@ public class CreateNameNetwork : NetworkBehaviour
             isName = false;
             isName = true;
         }
-        hienTenNhanVat.transform.LookAt(Camera.main.transform);
-        hienTenNhanVat.transform.Rotate(0, 180, 0);
-
+        
     }
     public void CreateNameCharacter()
     {
