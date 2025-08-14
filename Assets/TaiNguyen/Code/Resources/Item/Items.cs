@@ -3,7 +3,7 @@ using UnityEngine;
 public class Items: MonoBehaviour
 {
     //Luu TRU thong tin cua vat pham
-    public string name;
+    public string Name;
     public int id;
     public int damage;
     public int defense;

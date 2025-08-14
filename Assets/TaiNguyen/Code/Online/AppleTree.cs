@@ -1,49 +1,82 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
-using System.Security.Cryptography;
 using Fusion;
+using TMPro;
 using UnityEngine;
 
 public class AppleTree : NetworkBehaviour
 {
-    public GameObject[] apple;
-    public GameObject cong1Tao;
-    [Networked, OnChangedRender(nameof(TruTao))]
-    public int countApple { get; set; } = 4;
+
+    [Networked]
+    public int AppleCount { get; set; }
+
+    public GameObject[] apples;
+    public GameObject appleTextPopup;
+    public TextMeshProUGUI appleTextUI;
+
+    private int lastAppleCount;
+    private float applesTaken;
 
     public override void Spawned()
     {
-        countApple = apple.Count();
-        cong1Tao.SetActive(false);
+        AppleCount = apples.Count(apple => apple.activeSelf);
+        lastAppleCount = AppleCount;
+        appleTextPopup.SetActive(false);
     }
+
     public override void FixedUpdateNetwork()
     {
-        countApple = apple.Count();
+        lastAppleCount = AppleCount;
     }
 
-    public void TruTao()
+    // RPC để gửi từ client tới host yêu cầu nhặt táo
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RpcTruTao()
     {
-        foreach (var item in apple)
+       RpcXuLyTruTao();
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RpcXuLyTruTao()
+    {
+        HandleTruTao();
+    }
+    public void HandleTruTao()
+    {
+        GameObject firstActiveApple = apples.FirstOrDefault(apple => apple.activeSelf);
+        if (firstActiveApple != null)
         {
-            if(item != null)
-            {
-                item.gameObject.SetActive(false);
-                break;
-            }
+            firstActiveApple.SetActive(false);
         }
-        cong1Tao.SetActive(true);
+        if (HasStateAuthority)
+        {
+            AppleCount--;
+        }
+     
+        applesTaken = 1f;
+        appleTextUI.text = $"+{lastAppleCount - AppleCount} Apple";
+        lastAppleCount = AppleCount;
+        appleTextPopup.SetActive(true);
         StartCoroutine(Riset());
-        cong1Tao.SetActive(false );
-
-        
-
-    }
-    public void SetTao()
-    {
-        countApple -= 1;
     }
     public IEnumerator Riset()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
+        appleTextPopup.SetActive(false);
     }
+
+    
+
+    // Gọi từ client
+    public void RequestTruTao()
+    {
+        if (HasInputAuthority)
+        {
+            RpcTruTao();
+        }
+    }
+
+    public int GetAppleCount() => AppleCount;
+
+    public float GetApplesTaken() => applesTaken;
 }

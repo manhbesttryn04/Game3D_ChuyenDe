@@ -11,18 +11,21 @@ public class NetworkHealth : NetworkBehaviour
     [SerializeField] Slider healthSlider;
     public GameObject healthLocal;
     [SerializeField] Slider healthSiderLocal;
+    public GameObject textADMINLocal;
 
     private void Start()
     {
+        
         healthSlider.value = Health;
         healthSiderLocal.value = Health;
         if (Object.HasInputAuthority)
         {
+            textADMINLocal.SetActive(Runner.IsServer);
             healthLocal.SetActive(true);
             healthNetwork.SetActive(false);
         }
         else
-        {
+        { textADMINLocal.SetActive(false);
             healthLocal.SetActive(false);
             healthNetwork.SetActive(true);
         }

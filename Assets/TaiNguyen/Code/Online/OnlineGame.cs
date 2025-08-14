@@ -6,24 +6,31 @@ using UnityEngine.UI;
 
 public class OnlineGame : SimulationBehaviour, IPlayerJoined
 {
-
+    [Header("Player Spawn")]
     public GameObject[] PlayerSpaw;
-    [Header("Chon nhan vat")]
+    [Header("Image Chatacter")]
+    public Sprite[] imageChatacter;
+    [Header("Choose Character")]
     public GameObject chooserMode;
-    public GameObject startGame;
     public int chooseChatacter;
-    [Header("Tao ten nhan vat")]
     public GameObject createMode;
     public TMP_InputField nameCharacterBox;
     public TextMeshProUGUI canhBao;
     private string textCanhBaoBanDau = "Vui lòng nhập tên ít nhất 2 kí tự và nhiều nhất 10 kí tự!";
     public bool tatMoCanhBao = false;
-   [Header("Toa do Spaw")]
+    [Header("Image Character")]
+    public Image imageChatacterBox;
+    [Header("Start Game")]
+    public GameObject startGame;
+    [Header("Name Network")]
     public string nameNetWork;
+   
+    public int indexChatacter;
+    [Header("Transform Spaw")]
     public float vX;
     public float vY;
     public float vZ;
-
+   
 
     private void Start()
     {
@@ -31,6 +38,7 @@ public class OnlineGame : SimulationBehaviour, IPlayerJoined
         startGame.SetActive(false);
         canhBao.text = textCanhBaoBanDau;
     }
+    
     public void PlayerJoined(PlayerRef player)
     {
         Debug.Log("spaw");
@@ -44,7 +52,16 @@ public class OnlineGame : SimulationBehaviour, IPlayerJoined
                     if (playerSetup != null)
                     {
                         playerSetup.SetUpCamera();
+
+
                     }
+                    var nameplayer = obj.GetComponent<PlayerSetUp>();
+                    if (nameplayer != null)
+                    {
+                        nameplayer.GetTenPlayer();
+                    }
+
+
                     var playerCreateName = obj.GetComponent<CreateNameNetwork>();
                     if (playerCreateName != null)
                     {
@@ -57,21 +74,30 @@ public class OnlineGame : SimulationBehaviour, IPlayerJoined
 
                         cam.setCamera(camera.transform);
                     }
+                    var imageChatacterPlayer = obj.GetComponent<ImagePlayerLocal>();
+                    if(imageChatacterPlayer != null)
+                    {
+                        imageChatacterPlayer.SetImage(imageChatacter[indexChatacter]);
+                    }
                 });
             chooserMode.SetActive(false);
 
 
         }
+       
+      
     }
-    public void ChooseHuman()
+    public void ChooseHuman1()
     {
         chooseChatacter = 0;
-       chooserMode.SetActive(false) ;
+        indexChatacter = 0;
+        chooserMode.SetActive(false);
         createMode.SetActive(true);
     }
-    public void ChooseHulk()
+    public void ChooseHuman2()
     {
         chooseChatacter = 1;
+        indexChatacter = 1;
         chooserMode.SetActive(false);
         createMode.SetActive(true);
 
@@ -82,7 +108,7 @@ public class OnlineGame : SimulationBehaviour, IPlayerJoined
         {
             canhBao.text = "Tên ít hơn 2 kí tự, vui lòng nhập lại!";
             tatMoCanhBao = true;
-            if(tatMoCanhBao)
+            if (tatMoCanhBao)
             {
                 StartCoroutine(TatMoCanhBao());
             }

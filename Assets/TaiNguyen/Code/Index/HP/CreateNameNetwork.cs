@@ -13,22 +13,27 @@ public class CreateNameNetwork : NetworkBehaviour
     public NetworkString<_16> NameNetWork { get; set; }
     public TextMeshProUGUI hienTenNhanVat;
     public TextMeshProUGUI hienTenNhatVatLocal;
+    public ChatNetWork chatNetWork;
     public bool isGame = false;
 
     public override void Spawned()
     {
         hienTenNhanVat.text = NameNetWork.ToString();
         hienTenNhatVatLocal.text = NameNetWork.ToString();
+        chatNetWork = FindAnyObjectByType<ChatNetWork>();
 
     }
     public override void FixedUpdateNetwork()
 
     {
+        if (!Object.HasInputAuthority) return;
         if (isGame)
         {
             isName = false;
             isName = true;
         }
+        
+        chatNetWork.SetName(gameObject.GetComponent<CreateNameNetwork>());
         
     }
     public void CreateNameCharacter()
@@ -47,6 +52,10 @@ public class CreateNameNetwork : NetworkBehaviour
         isGame = true;
         Debug.Log("da them ten");
 
+    }
+    public NetworkString<_16> GetNamePlayer()
+    {
+        return NameNetWork;
     }
 
 }

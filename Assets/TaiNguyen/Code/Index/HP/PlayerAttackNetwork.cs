@@ -14,6 +14,7 @@ public class PlayerAttackNetwork : NetworkBehaviour
     public float isKill { get; set; }
     [SerializeField] public CharacterController characterController;
     public float lastHP;
+    public bool Attack = true;
 
 
 
@@ -22,7 +23,7 @@ public class PlayerAttackNetwork : NetworkBehaviour
         if (!Object.HasInputAuthority) return;
         if (characterController.isGrounded)
         {
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1) && Attack == true)
             {
                 onAttack = true;
 
@@ -66,5 +67,13 @@ public class PlayerAttackNetwork : NetworkBehaviour
         Debug.Log("Bi danh");
 
 
+    }
+    public bool GetAttack()
+    {
+        return Attack;
+    }
+    public  void SetAttack(bool i)
+    {
+        Attack = i;
     }
 }

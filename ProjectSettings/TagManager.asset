@@ -20,6 +20,9 @@ TagManager:
   - Leflt Zone
   - Back Zone
   - NamDam
+  - NPCAD
+  - NPCWarrior
+  - NPC
   layers:
   - Default
   - TransparentFX
